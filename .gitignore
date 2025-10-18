@@ -49,4 +49,15 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.ico
+*.webp
+*.svg
+*.eps
+*.pdf
+*.docx

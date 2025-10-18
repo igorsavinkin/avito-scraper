@@ -50,13 +50,35 @@ class AvitoScraper:
         chrome_options.add_experimental_option("prefs", prefs)
         
         try:
-            service = Service(ChromeDriverManager().install())
+            # Метод 1: Автоматическая установка ChromeDriver через webdriver-manager
+            driver_path = ChromeDriverManager().install()
+            service = Service(executable_path=driver_path)
             self.driver = webdriver.Chrome(service=service, options=chrome_options)
             self.wait = WebDriverWait(self.driver, 10)
-            print("Браузер успешно запущен")
+            print("✓ Браузер успешно запущен")
         except Exception as e:
-            print(f"Ошибка при запуске браузера: {e}")
-            raise
+            print(f"⚠ Ошибка при запуске браузера (метод 1): {e}")
+            print("Попытка альтернативного метода...")
+            try:
+                # Метод 2: Попытка использовать системный ChromeDriver
+                self.driver = webdriver.Chrome(options=chrome_options)
+                self.wait = WebDriverWait(self.driver, 10)
+                print("✓ Браузер успешно запущен (системный ChromeDriver)")
+            except Exception as e2:
+                print(f"✗ Альтернативный метод также не сработал: {e2}")
+                print("\n" + "=" * 60)
+                print("РЕШЕНИЕ ПРОБЛЕМЫ:")
+                print("=" * 60)
+                print("1. Убедитесь, что Chrome установлен:")
+                print("   https://www.google.com/chrome/")
+                print("\n2. Попробуйте переустановить зависимости:")
+                print("   pip uninstall selenium webdriver-manager -y")
+                print("   pip install selenium==4.15.2 webdriver-manager==4.0.1")
+                print("\n3. Или скачайте ChromeDriver вручную:")
+                print("   https://chromedriver.chromium.org/downloads")
+                print("   И добавьте в PATH")
+                print("=" * 60)
+                raise
     
     def load_cookies(self) -> bool:
         """
